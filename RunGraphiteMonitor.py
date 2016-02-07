@@ -18,7 +18,7 @@ graphite = SqlMonitorGraphiteRunner(logpath=logging_settings['logpath'])
 graphite.add_server(srvr_services1)
 
 graphite.echo = False
-graphite.start('graphite1.chcgil1.it.corp', 2003)
+graphite.start('graphite1.mydomain', 2003)
 
 while True:
 	c = Console.ReadKey(True)
