@@ -6,7 +6,7 @@ from DefaultGraphiteSettings import logging_settings
 
 from System import Console, ConsoleKey
 
-srvr_services1 = SqlServerMonitor('services1.chcgil1.it.corp', graphite_root='msdb', **logging_settings)
+srvr_services1 = SqlServerMonitor('services1.mydomain', graphite_root='msdb', **logging_settings)
 
 srvr_services1.db = 'dba'
 # srvr_services1.add_metric(blocks_waits).add_metric(wait_stats).add_metric(async_network_waits).add_metric(
@@ -27,7 +27,7 @@ graphite.add_server(srvr_services1)
 
 graphite_to_sql = GraphiteSqlPersist(
 	'Test persistance & formula builder'
-	, 'services1.chcgil1.it.corp'
+	, 'services1.mydomain'
 	, 'dba2'
 	, duration_seconds=150
 	, export_interval_seconds=30
@@ -38,35 +38,35 @@ graphite_to_sql = GraphiteSqlPersist(
 	)
 
 CorvisaReportingLogFlushes = GraphiteMetricName(
-	'services1.chcgil1.it.corp'
+	'services1.mydomain'
 	, 'database_statistics'
 	, 'log_flush_perSec'
 	, database_name='CorvisaReporting'
 	)
 
 Services1SosWaitTime = GraphiteMetricName(
-	'services1.chcgil1.it.corp'
+	'services1.mydomain'
 	, 'wait_stats'
 	, 'sos_scheduler_yield_wait_time_ms'
 	)
 
 Services1_SDriveRW_Stall = GraphiteMetricName(
-	'services1.chcgil1.it.corp'
+	'services1.mydomain'
 	, 'io'
 	, 'io_stall'
 	, database_name='all', database_file_type='by_drive', physical_drive_letter='S'
 	)
 
 Services1_SDriveRW = GraphiteMetricName(
-	'services1.chcgil1.it.corp'
+	'services1.mydomain'
 	, 'io'
 	, 'reads_writes'
 	, database_name='all', database_file_type='by_drive', physical_drive_letter='S'
 	)
 
-# AvgLogFlush_perSec = Formula('CorvisaReporting Avg Log Flushes per second')
-# AvgLogFlush_perSec.add_series(CorvisaReportingLogFlushes, apply_formula='granular_diff_formula')
-AvgLogFlush_perSec = (Formula('CorvisaReporting Avg Log Flushes per second')).add_series(CorvisaReportingLogFlushes, apply_formula='granular_diff_formula')
+# AvgLogFlush_perSec = Formula('Reporting Avg Log Flushes per second')
+# AvgLogFlush_perSec.add_series(ReportingLogFlushes, apply_formula='granular_diff_formula')
+AvgLogFlush_perSec = (Formula('Reporting Avg Log Flushes per second')).add_series(ReportingLogFlushes, apply_formula='granular_diff_formula')
 
 SosWait = Formula('services1 sos scheduler wait time')
 SosWait.add_series(Services1SosWaitTime, apply_formula='granular_diff_formula')
@@ -88,8 +88,7 @@ graphite_to_sql.add_formula(
 
 # graphite.echo = False
 graphite.silent = True
-# graphite.start('graphite1.chcgil1.it.corp', 2003)
-graphite.start('graphite.it.corp', 2003)
+graphite.start('graphite.mydomain', 2003)
 graphite_to_sql.start(graphite)
 
 while graphite_to_sql.is_running:
