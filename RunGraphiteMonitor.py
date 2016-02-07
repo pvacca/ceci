@@ -5,7 +5,7 @@ from DefaultGraphiteSettings import logging_settings
 
 from System import Console, ConsoleKey
 
-srvr_services1 = SqlServerMonitor('services1.chcgil1.it.corp', graphite_root='msdb', **logging_settings)
+srvr_services1 = SqlServerMonitor('services1.mydomain', graphite_root='msdb', **logging_settings)
 
 srvr_services1.db = 'dba2'
 srvr_services1.add_metric(blocks_waits).add_metric(wait_stats).add_metric(async_network_waits).add_metric(
